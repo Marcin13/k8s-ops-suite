@@ -30,8 +30,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myapp
   namespace: argo-cd
+  name: myapp
+  labels:
     app: myapp
 spec:
   replicas: 2
