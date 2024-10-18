@@ -26,8 +26,7 @@
 #     - hosts:
 #         - argocd.local               # The same domain/host for TLS certificate
 #       secretName: tls-local  # TLS secret created automatically by cert-manager
-
-
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
