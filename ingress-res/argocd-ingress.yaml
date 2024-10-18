@@ -32,7 +32,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: myapp
-  labels:
+  namespace: argo-cd
     app: myapp
 spec:
   replicas: 2
@@ -64,6 +64,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: myapp
+  namespace: argo-cd
 spec:
   ports:
     - port: 80
@@ -76,7 +77,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: myapp-ingress
-  #namespace: argocd
+  namespace: argo-cd
   annotations:
     #cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
