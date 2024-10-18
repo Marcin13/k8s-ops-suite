@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-server-ingress
+  namespace: argo-cd
+  annotations:
+    #cert-manager.io/cluster-issuer: letsencrypt-prod  # Use cert-manager to handle SSL certificates
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"  # Backend Argo CD server uses HTTP
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"  # Enforce HTTPS
+  
+spec:
+  ingressClassName: nginx  # Specify NGINX as the ingress controller
+  rules:
+    - host: argocd.local  # Change this to your domain or local host
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-server  # Argo CD service handling the request
+                port:
+                  number: 443  # Argo CD server listens on port 443
+                          
+  tls:
+    - hosts:
+        - argocd.local               # The same domain/host for TLS certificate
+      secretName: tls-local  # TLS secret created automatically by cert-manager

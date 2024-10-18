@@ -1,0 +1,72 @@
+# Kind - https://kind.sigs.k8s.io/docs/user/ingress/
+controller:
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  hostPort:
+    enabled: true
+  terminationGracePeriodSeconds: 0
+  service:
+    type: NodePort
+  watchIngressWithoutClass: true
+  # add by me
+  allowSnippetAnnotations: true
+  serviceAccount:
+    create: false
+    name: ingress-nginx
+
+  nodeSelector:
+    ingress-ready: "true"
+  tolerations:
+    - key: "node-role.kubernetes.io/master"
+      operator: "Equal"
+      effect: "NoSchedule"
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Equal"
+      effect: "NoSchedule"
+
+  publishService:
+    enabled: false
+  extraArgs:
+    publish-status-address: localhost
+
+
+
+# kubectl create namespace ingress-nginx
+# helm install ingress-nginx ingress-nginx/ingress-nginx -f nginx-ingress/my-values.yaml -n ingress-nginx
+
+
+
+# helm status ingress-nginx --namespace ingress-nginx
+
+# helm list -n ingress-nginx
+
+# helm uninstall ingress-nginx -n ingress-nginx
+
+# helm pull ingress-nginx/ingress-nginx --untar
+
+# helm show values ingress-nginx/ingress-nginx > my-values.yaml
+
+# helm rollback list ingress-nginx -n ingress-nginx
+
+# helm rollback ingress-nginx 1 -n ingress-nginx
+
+
+
+# kubectl create namespace ingress-nginx
+
+# helm install -n ingress-nginx --create-namespace \
+#   --values https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/hack/manifest-templates/provider/kind/values.yaml \
+#   --set controller.allowSnippetAnnotations=true ingress-nginx ingress-nginx/ingress-nginx
+
+
+
+# helm install ingress-nginx ingress-nginx/ingress-nginx \
+#   --namespace ingress-nginx \
+#   --create-namespace \
+#   --values nginx-ingress/my-values.yaml
+
+  # helm upgrade ingress-nginx ingress-nginx/ingress-nginx \
+  # --namespace ingress-nginx \
+  # --values nginx-ingress/my-values.yaml
